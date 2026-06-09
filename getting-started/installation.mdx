@@ -1,0 +1,50 @@
+---
+title: "Installation"
+description: "Run via Docker (recommended), build from source, or install via OS packages."
+icon: "download"
+---
+
+MTConnect agents can be run via Docker (recommended), built from source, or installed via OS packages.
+
+## Docker (Recommended)
+
+```bash
+docker pull mtconnect/agent:latest
+docker run -p 5000:5000 mtconnect/agent:latest
+```
+
+## Build from Source
+
+<Tabs>
+  <Tab title="Linux">
+    ```bash
+    sudo apt install cmake libxml2-dev
+    git clone https://github.com/mtconnect/cppagent.git
+    cd cppagent && cmake -S . -B build && cmake --build build -j$(nproc)
+    sudo cmake --install build
+    ```
+  </Tab>
+  <Tab title="macOS">
+    ```bash
+    brew install cmake libxml2
+    git clone https://github.com/mtconnect/cppagent.git
+    cd cppagent && cmake -S . -B build && cmake --build build
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```bash
+    # Visual Studio 2022
+    git clone https://github.com/mtconnect/cppagent.git
+    cd cppagent
+    cmake -S . -B build -G "Visual Studio 17 2022"
+    cmake --build build --config Release
+    ```
+  </Tab>
+</Tabs>
+
+## Verify
+
+```bash
+curl http://localhost:5000/probe
+# Returns MTConnect XML with device descriptions
+```

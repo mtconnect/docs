@@ -1,0 +1,83 @@
+---
+title: "Changelog"
+description: "MTConnect C++ Agent release history — first release of each major version."
+icon: "clock-rotate-left"
+mode: "center"
+---
+
+<Update label="v2.7.0.3" description="2025 · Latest stable">
+  First release of the MTConnect 2.7 agent.
+
+  - Added support for 2.7 Assets
+  - Updated the Readme file for the C++ Agent
+  - Completed WebSocket Asset support and WebSocket testing
+  - Verified handling of Japanese characters
+  - Migrated codebase to C++ 20
+</Update>
+
+<Update label="v2.6.0.0" description="2024">
+  First release of the MTConnect 2.6 agent.
+
+  - Added support for version 2.6 REST error response documents
+  - Support for `AssetAdded` event alongside `AssetChanged` and `AssetRemoved`
+  - Fixed WebSocket error reporting and handling
+  - All error handling is backwards compatible with older error documents
+</Update>
+
+<Update label="v2.5.0.1" description="2024">
+  First release of the MTConnect 2.5 agent.
+
+  - Support for validation of the MTConnect Streams document (`Validation = true` in config)
+  - Initial validation covers controlled vocabulary (enumerations); numeric types planned for future releases
+  - Added support for new asset models: **Pallet** and **Fixture**
+  - WebSockets communication support via the REST interface
+  - Deprecated the old MQTT Server; topics now mirror probe, current, and streams
+</Update>
+
+<Update label="v2.4.0.1" description="2023">
+  First release of the MTConnect 2.4 agent.
+
+  - Added JSON schema for configuration files
+  - Fixed documentation for configuration in the README
+  - Added XPath to the `Mqtt2Service` to sub-select which components and data items are published
+</Update>
+
+<Update label="v2.3.0.1" description="2023">
+  First release of the MTConnect 2.3 agent.
+
+  - Version 2.3 new **Condition ID** for Condition observations and associated activations
+  - Added `Sender` configuration setting (`Sender = ...`) to override the header sender value
+  - Added 2.3 schema files
+  - README updates for MQTT, SHDR, and related documentation fixes
+</Update>
+
+<Update label="v2.2.0.3" description="2023">
+  First release of the MTConnect 2.2 agent.
+
+  - Official reference implementation of MTConnect Agent version 2.2
+  - All 2.2 changes in the information model applied
+  - Dynamic changes to device XML configuration from adapters and upstream agents
+  - Swagger documentation served directly from the agent (`/swagger`)
+  - Updated JSON document generation
+  - Added hash for Assets and Devices
+  - Added `ImageFiles` for Configuration
+  - Added `ComponentConfigurationParameters` Asset
+  - Added UUID support for `CoordinateSystems`
+  - Added GitHub Actions workflows for CI/CD
+</Update>
+
+<Update label="v2.1.0.1" description="2022">
+  First release of the MTConnect 2.1 agent.
+
+  - Added MQTT Sink support (`MqttClientId` configurable for authentication)
+  - Updated schema version on device XML reload
+  - Asset handling fixes — verified use of assets when no device or type is supplied
+  - Clarified `logging_level` values in documentation
+</Update>
+
+<Update label="v2.0.0.11" description="2021">
+  First release of the MTConnect 2.0 agent.
+
+  - Added `units` and `nativeUnits` to `SolidModel` per the 2.0 specification
+  - Foundation for Device Relationships and Interface components introduced in the 2.0 standard
+</Update>
