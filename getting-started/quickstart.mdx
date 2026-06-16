@@ -6,13 +6,20 @@ icon: "rocket"
 
 <Badge>5 min read</Badge>
 
-The fastest way to get an MTConnect Agent running is with Docker. You'll have live XML data in under 5 minutes.
+The fastest way to get an MTConnect Agent running on Windows is to download the prebuilt binary. You'll have live XML data in under 5 minutes.
 
-## 1. Run the Agent with Docker
+## 1. Download the Agent
+
+Go to the [cppagent releases page](https://github.com/mtconnect/cppagent/releases) and download the latest Windows binary (`.zip` file) under **Assets**.
+
+Unzip the archive — you'll see `agent.exe` and a default `agent.cfg` config file inside.
+
+## 2. Start the Agent
+
+Open a Command Prompt, navigate to the unzipped folder, and run:
 
 ```bash
-docker run -it --rm -p 5000:5000 \
-  mtconnect/agent:latest
+agent.exe run agent.cfg
 ```
 
 The agent starts with a built-in simulator device. Open your browser to verify:
@@ -21,7 +28,9 @@ The agent starts with a built-in simulator device. Open your browser to verify:
 curl http://localhost:5000/probe
 ```
 
-## 2. Your First Client (Python)
+Or just open `http://localhost:5000/probe` directly in your browser.
+
+## 3. Your First Client (Python)
 
 ```python
 import requests
@@ -40,5 +49,15 @@ print(current.text[:500])
 ```
 
 <Tip>
-  See the [Examples page](/tutorials/code-examples) for complete working code in Python, JavaScript, and C#.
+  See the [Examples page](/tutorials/code-examples) for complete working code in
+  Python, JavaScript, and C#.
 </Tip>
+
+## Alternative: Run with Docker
+
+If you're comfortable with Docker, you can also spin up the agent in one command:
+
+```bash
+docker run -it --rm -p 5000:5000 \
+  mtconnect/agent:latest
+```

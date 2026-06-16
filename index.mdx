@@ -18,7 +18,7 @@ MTConnect is an open, royalty-free standard (ANSI/MTC1.4-2018) that defines a se
 
 <CardGroup cols={2}>
   <Card title="Real-Time Data" icon="bolt" href="/getting-started/quickstart">
-    Stream live machine data over standard HTTP
+    Stream live machine data via a **streaming REST API** over standard HTTP
   </Card>
   <Card title="Open Architecture" icon="diagram-project" href="/concepts/architecture">
     Agent + Adapter pattern, works with any language
@@ -37,7 +37,7 @@ The MTConnect architecture has three layers:
 
 1. **Machine / Device** — CNC machines, robots, sensors generating raw data
 2. **Adapter** — translates machine signals into the SHDR protocol
-3. **Agent** — normalizes data and serves it over HTTP as structured XML
+3. **Agent** — normalizes data and exposes it as a **streaming REST API over HTTP**, serving structured XML responses at endpoints like `/probe`, `/current`, and `/sample`
 
 Client applications call the Agent's HTTP endpoints (`/probe`, `/current`, `/sample`) to discover devices, read current values, or stream historical data.
 

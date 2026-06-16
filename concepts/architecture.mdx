@@ -6,13 +6,19 @@ icon: "diagram-project"
 
 MTConnect uses a three-tier architecture: **Device → Adapter → Agent → Client**.
 
+## Architecture Overview
+
+<img src="mtconnect_architecture_diagram.png" alt="MTConnect architecture: Machine → Adapter (SHDR/MQTT) → Agent (REST API) → Application (XML/JSON)" />
+
 ## The Agent
 
-The Agent is the central hub. It accepts data from one or more adapters over TCP, buffers it in a circular buffer, and serves it to clients over HTTP. The reference implementation is the open-source [C++ Agent](https://github.com/mtconnect/cppagent).
+The Agent is the central hub. It accepts data from one or more adapters over TCP, buffers it in a circular buffer, and serves it to clients over a **REST API**. The reference implementation is the open-source [C++ Agent](https://github.com/mtconnect/cppagent).
 
-## Adapters (SHDR Protocol)
+## Adapters
 
-Adapters connect machines to the Agent using the Simple Hierarchical Data Representation (SHDR) protocol over a TCP socket. Each line is a pipe-delimited string:
+Adapters connect machines to the Agent, translating raw machine signals into one of two protocols:
+
+**SHDR (Simple Hierarchical Data Representation)** — the classic protocol, sent over a TCP socket as pipe-delimited strings:
 
 ```
 2024-01-15T10:23:45.000Z|Smode|AUTOMATIC
@@ -20,9 +26,19 @@ Adapters connect machines to the Agent using the Simple Hierarchical Data Repres
 2024-01-15T10:23:45.001Z|path_pos|100.5|200.3|0.0
 ```
 
-## HTTP Endpoints
+**MQTT** — a modern pub/sub alternative supported from MTConnect v2.5+, useful for cloud-connected or IoT deployments.
 
-- `GET /probe` — device structure and metadata
-- `GET /current` — latest snapshot of all data items
-- `GET /sample` — sequence of observations from the buffer
-- `GET /assets` — retrieve assets (e.g. cutting tools)
+## REST API Endpoints
+
+The Agent exposes a REST API over HTTP. Clients make standard `GET` requests and receive structured **XML** (default) or **JSON** responses:
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /probe` | Device structure and metadata |
+| `GET /current` | Latest snapshot of all data items |
+| `GET /sample` | Sequence of observations from the buffer |
+| `GET /assets` | Retrieve assets (e.g. cutting tools) |
+
+<Tip>
+  All endpoints support content negotiation — add `Accept: application/json` to your request header to receive JSON instead of XML.
+</Tip>
