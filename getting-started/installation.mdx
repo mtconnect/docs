@@ -1,48 +1,94 @@
 ---
 title: "Installation"
-description: "Run via Docker (recommended), build from source, or install via OS packages."
+description: "Run via Docker, download a prebuilt Windows binary, or build from source."
 icon: "download"
 ---
 
-MTConnect agents can be run via Docker (recommended), built from source, or installed via OS packages.
+Choose the path that fits your setup:
 
-## Docker (Recommended)
+<CardGroup cols={3}>
+  <Card title="Windows Binary" icon="windows" href="#windows-binary">
+    Easiest — download and run, no build tools needed
+  </Card>
+  <Card title="Docker" icon="docker" href="#docker">
+    Best for Linux/macOS or containerized environments
+  </Card>
+  <Card title="Build from Source" icon="code" href="#build-from-source">
+    Full control — any platform with a C++ toolchain
+  </Card>
+</CardGroup>
+
+## Windows Binary
+
+The simplest way to get started on Windows. No build tools or Docker required.
+
+1. Go to the [cppagent releases page](https://github.com/mtconnect/cppagent/releases)
+2. Download the latest `.zip` file under **Assets**
+3. Unzip it — you'll find `agent.exe` and a default `agent.cfg` inside
+4. Open Command Prompt, navigate to the unzipped folder, and run:
+
+```bash
+agent.exe run agent.cfg
+```
+
+## Docker
+
+### Production agent
 
 ```bash
 docker pull mtconnect/agent:latest
 docker run -p 5000:5000 mtconnect/agent:latest
 ```
 
+### Demo image
+
+Want to explore MTConnect without connecting a real machine? The [mtconnect/demo](https://hub.docker.com/r/mtconnect/demo) image ships with a simulated device and sample data — no hardware required.
+
+```bash
+docker pull mtconnect/demo:2.7
+docker run -p 5000:5000 mtconnect/demo:2.7
+```
+
+Then open [http://localhost:5000/probe](http://localhost:5000/probe) to see a fully populated MTConnect response from the simulated device.
+
 ## Build from Source
 
 <Tabs>
   <Tab title="Linux">
-    ```bash
+```bash
     sudo apt install cmake libxml2-dev
     git clone https://github.com/mtconnect/cppagent.git
     cd cppagent && cmake -S . -B build && cmake --build build -j$(nproc)
     sudo cmake --install build
-    ```
+```
   </Tab>
   <Tab title="macOS">
-    ```bash
+```bash
     brew install cmake libxml2
     git clone https://github.com/mtconnect/cppagent.git
     cd cppagent && cmake -S . -B build && cmake --build build
-    ```
+```
   </Tab>
   <Tab title="Windows">
-    ```bash
+```bash
     # Visual Studio 2022
     git clone https://github.com/mtconnect/cppagent.git
     cd cppagent
     cmake -S . -B build -G "Visual Studio 17 2022"
     cmake --build build --config Release
-    ```
+```
   </Tab>
 </Tabs>
 
 ## Verify
+
+Once the agent is running, confirm it's working using either method:
+
+**Option 1 — Open in your browser:**
+
+Go to [http://localhost:5000/probe](http://localhost:5000/probe). You should see an MTConnect XML response with device descriptions.
+
+**Option 2 — Use curl:**
 
 ```bash
 curl http://localhost:5000/probe
