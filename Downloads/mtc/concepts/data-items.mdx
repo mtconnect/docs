@@ -1,0 +1,26 @@
+---
+title: "Data Items"
+description: "Data Items are the atomic units of information in MTConnect. Each has a type, category, and optional subType."
+---
+
+Data Items are the atomic units of information in MTConnect. Each data item has a `type`, `category`, and optional `subType`.
+
+## Categories
+
+- **SAMPLE** — continuous numeric measurements (position, speed, temperature)
+- **EVENT** — discrete state changes (execution mode, program name)
+- **CONDITION** — fault/warning/normal states
+
+## Common Types
+
+```
+POSITION          — axis or path position (SAMPLE)
+VELOCITY          — axis velocity (SAMPLE)
+SPINDLE_SPEED     — rotational speed (SAMPLE)
+EXECUTION         — program state (EVENT)
+AVAILABILITY      — device available/unavailable (EVENT)
+PATH_FEEDRATE     — feed rate (SAMPLE)
+TEMPERATURE       — thermal measurement (SAMPLE)
+TOOL_ASSET_ID     — active tool identifier (EVENT)
+PART_COUNT        — parts produced (EVENT)
+```

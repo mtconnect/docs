@@ -1,6 +1,6 @@
 ---
 title: "What is MTConnect?"
-description: "An open, royalty-free standard (ANSI/MTC1.4-2018) that defines a semantic vocabulary for manufacturing equipment data."
+description: "An open, royalty-free standard that defines a semantic vocabulary for manufacturing equipment data."
 ---
 
 <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
@@ -18,7 +18,7 @@ MTConnect is an open, royalty-free standard (ANSI/MTC1.4-2018) that defines a se
 
 <CardGroup cols={2}>
   <Card title="Real-Time Data" icon="bolt" href="/getting-started/quickstart">
-    Stream live machine data via a **streaming REST API** over standard HTTP
+    Stream live machine data over standard HTTP
   </Card>
   <Card title="Open Architecture" icon="diagram-project" href="/concepts/architecture">
     Agent + Adapter pattern, works with any language
@@ -37,20 +37,13 @@ The MTConnect architecture has three layers:
 
 1. **Machine / Device** — CNC machines, robots, sensors generating raw data
 2. **Adapter** — translates machine signals into the SHDR protocol
-3. **Agent** — normalizes data and exposes it as a **streaming REST API over HTTP**, serving structured XML responses at endpoints like `/probe`, `/current`, and `/sample`
+3. **Agent** — normalizes data and serves it over HTTP as structured XML
 
 Client applications call the Agent's HTTP endpoints (`/probe`, `/current`, `/sample`) to discover devices, read current values, or stream historical data.
 
-## Supported versions
+## Supported Versions
 
-| Version | Released | Notable additions |
-|---------|----------|-------------------|
-| `2.7` | 2025 | Latest stable; WebSocket asset support, C++20 migration |
-| `2.6` | 2024 | `AssetAdded` event, REST error response documents |
-| `2.5` | 2024 | Pallet & Fixture assets, WebSocket support, MQTT topics |
-| `2.4` | 2023 | SensorConfiguration, SpecificationLimits, AlarmLimits |
-| `2.3` | 2023 | Condition ID, PartProcessingState, ProcessOccurrenceId |
-| `2.2` | 2023 | TableEntry/DataSetEntry, CoordinateSystems UUID, SolidModel config |
-| `2.1` | 2022 | Interfaces, Relationships, Specifications |
-| `2.0` | 2021 | Observation Information Model, DataSet/Table types, Part assets |
-| `1.8` | 2020 | FunctionalMode, PartCount/PartStatus, CuttingTool enhancements |
+- **v2.2** (current) — CuttingTool enhancements, additive manufacturing types
+- **v2.1** — Component relationships, Specifications data items
+- **v2.0** — Device Relationships, Interface components
+- **v1.x** — Legacy, still widely deployed

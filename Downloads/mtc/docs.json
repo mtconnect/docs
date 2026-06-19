@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
+  "theme": "mint",
   "name": "MTConnect",
   "colors": {
     "primary": "#1D4ED8",
@@ -9,11 +9,8 @@
   },
   "favicon": "/favicon.svg",
   "logo": {
-    "light": "/logo/logo.svg",
-    "dark": "/logo/logo.svg"
-  },
-  "icons": {
-    "library": "lucide"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
   "navbar": {
     "links": [
@@ -31,7 +28,6 @@
     "groups": [
       {
         "group": "Getting Started",
-        "icon": "rocket",
         "pages": [
           "index",
           "getting-started/quickstart",
@@ -40,7 +36,6 @@
       },
       {
         "group": "Core Concepts",
-        "icon": "book-open",
         "pages": [
           "concepts/architecture",
           "concepts/devices-and-adapters",
@@ -51,7 +46,6 @@
       },
       {
         "group": "Tutorials",
-        "icon": "graduation-cap",
         "pages": [
           "tutorials/writing-an-adapter",
           "tutorials/building-a-client",
@@ -60,7 +54,6 @@
       },
       {
         "group": "Reference",
-        "icon": "book",
         "pages": [
           "reference/data-model",
           "reference/xml-schema",
@@ -79,22 +72,13 @@
           "anchor": "GitHub",
           "href": "https://github.com/mtconnect",
           "icon": "github"
-        },
-        {
-          "anchor": "Community Slack",
-          "href": "https://mtconnect.slack.com",
-          "icon": "slack"
         }
       ]
     }
   },
-  "contextual": {
-    "options": ["copy", "view", "chatgpt", "claude"]
-  },
   "footer": {
     "socials": {
-      "github": "https://github.com/mtconnect",
-      "linkedin": "https://linkedin.com/company/mtconnect"
+      "github": "https://github.com/mtconnect"
     }
   }
 }

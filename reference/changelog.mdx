@@ -1,0 +1,157 @@
+---
+title: "Changelog"
+description: "MTConnect C++ Agent release history — first release of each major version."
+icon: "clock-rotate-left"
+mode: "center"
+---
+
+<Update label="v2.7.0.3" description="2025 · Latest stable">
+  First release of the MTConnect 2.7 agent. [View model changes →](https://model.mtconnect.org/Version2.7/Changes/Version2.7/)
+
+- Introduced **Activity** and **ActivityGroup** for describing sequenced manufacturing activities with ordering and optional flags
+- Added **Task** and **TaskArchetype** assets with full lifecycle state tracking (`INACTIVE`, `PREPARING`, `COMMITTING`, `COMMITTED`, `COMPLETE`, `FAIL`)
+- Introduced **Process**, **ProcessArchetype**, and **ProcessStep** for describing manufacturing processes and their steps
+- Added **Part** and **PartArchetype** assets with drawing, family, revision, and native ID support
+- Added **Routing** for expressing precedence relationships between process steps
+- Introduced **BindingState** event (`INACTIVE`, `PREPARING`, `COMMITTED`) for tracking resource binding
+- Added new depth subtypes: `CUT`, `LAYER`, `PECK`, `PLUNGE`; new swing data items: `SwingAngle`, `SwingDiameter`, `SwingRadius`
+- Added **WaterHardness** sample data item and `MILLIGRAM/LITER` unit
+- Introduced **Customer** with address and ID; **Collaborator** for multi-party process descriptions
+- Added `FIXTURE_ASSET_ID` and `TASK_ASSET_ID` event types
+- Added **Material** subtypes: `Electrode`, `Filler`, `Gas` for welding and additive processes
+- Added **PinTool** and **ToolHolder** tool component types
+- Completed WebSocket Asset support and WebSocket testing
+- Verified handling of Japanese characters
+- Migrated codebase to C++20
+- Updated README for the C++ Agent
+</Update>
+
+<Update label="v2.6.0.0" description="2024">
+  First release of the MTConnect 2.6 agent. [View model changes →](https://model.mtconnect.org/Version2.6/Changes/Version2.6/)
+
+- Added support for version 2.6 REST error response documents
+- Support for `AssetAdded` event alongside `AssetChanged` and `AssetRemoved`
+- Fixed WebSocket error reporting and handling
+- All error handling is backwards compatible with older error documents
+</Update>
+
+<Update label="v2.5.0.1" description="2024">
+  First release of the MTConnect 2.5 agent. [View model changes →](https://model.mtconnect.org/Version2.5/Changes/Version2.5/)
+
+- Support for validation of the MTConnect Streams document (`Validation = true` in config)
+- Initial validation covers controlled vocabulary (enumerations); numeric types planned for future releases
+- Added support for new asset models: **Pallet** and **Fixture**
+- WebSockets communication support via the REST interface
+- Deprecated the old MQTT Server; topics now mirror probe, current, and streams
+</Update>
+
+<Update label="v2.4.0.1" description="2023">
+  First release of the MTConnect 2.4 agent. [View model changes →](https://model.mtconnect.org/Version2.4/Changes/Version2.4/)
+
+- Added support for **Sensor** and **SensorConfiguration** to describe physical sensors attached to a device
+- Introduced **SpecificationLimits** and **AlarmLimits** for data items — defining normal, warning, and fault operating ranges
+- Added **ProcessFeedRate** and **ProcessTimer** data items for process-level monitoring
+- Added **PartCount** subtypes: `ALL`, `BAD`, `GOOD`, `FAILED`, `MADE`, `REMAINING`, `TARGET`
+- Added JSON schema for configuration files
+- Added XPath to the `Mqtt2Service` to sub-select which components and data items are published
+</Update>
+
+<Update label="v2.3.0.1" description="2023">
+  First release of the MTConnect 2.3 agent. [View model changes →](https://model.mtconnect.org/Version2.3/Changes/Version2.3/)
+
+- Added **Condition ID** — each Condition observation now carries a unique `conditionId` to distinguish simultaneous activations of the same condition type
+- Introduced **ObservationUpdateRate** data item for reporting the actual rate at which observations are generated
+- Added **PartProcessingState** data item for tracking part lifecycle stages (e.g., `NEEDS_PROCESSING`, `IN_PROCESS`, `PROCESSING_ENDED`)
+- Added **ProcessOccurrenceId** for correlating observations belonging to the same process occurrence
+- Added `Sender` configuration setting to override the header sender value
+</Update>
+
+<Update label="v2.2.0.3" description="2023">
+  First release of the MTConnect 2.2 agent. [View model changes →](https://model.mtconnect.org/Version2.2/Changes/Version2.2/)
+
+- Official reference implementation of MTConnect Agent version 2.2
+- Introduced **Adapter Software** and **Adapter URI** components for describing adapters in the device model
+- Added **TableEntry** and **DataSetEntry** observations with discrete key-value pair reporting
+- Extended **CoordinateSystems** with UUID support and added **CoordinateSystemRef** to associate data items with a specific coordinate system
+- Added **SolidModel** configuration element to associate 3D geometry with components and devices
+- Dynamic changes to device XML configuration from adapters and upstream agents
+- Swagger documentation served directly from the agent (`/swagger`)
+</Update>
+
+<Update label="v2.1.0.1" description="2022">
+  First release of the MTConnect 2.1 agent. [View model changes →](https://model.mtconnect.org/Version2.1/Changes/Version2.1/)
+
+- Introduced **Interface** components (`RequestResponse` interaction model) allowing devices to advertise capabilities and accept requests from other devices
+- Added **Relationship** types: `DeviceRelationship`, `ComponentRelationship`, and `AssetRelationship` for expressing dependencies between model elements
+- Added **Specification** element to data items for documenting maximum, minimum, and nominal values
+- Added **ControlLimits** and **DataRangeCondition** for monitoring data items against defined boundaries
+- Added MQTT Sink support (`MqttClientId` configurable for authentication)
+</Update>
+
+<Update label="v2.0.0.11" description="2021">
+  First release of the MTConnect 2.0 agent. [View model changes →](https://model.mtconnect.org/Version2.0/Changes/Version2.0/)
+
+- Introduced **Observation Information Model** — separating the conceptual model for data items from the XML representation, enabling JSON and future format support
+- Added **DataSet** and **Table** observation types for reporting structured key-value data from a single data item
+- Added **Part** asset and **RawMaterial** asset types
+- Introduced **Configuration** sub-elements: `SolidModel`, `Motion`, `Relationships`, and `Specifications` for richer device descriptions
+- Added **Device Relationships** and **Interface** components for multi-device communication patterns
+</Update>
+
+<Update label="v1.8" description="2020">
+  First release of the MTConnect 1.8 agent.
+
+- Added **CuttingTool** asset enhancements: `ProcessFeedRate`, `ProcessSpindleSpeed`, and `ReconditionCount` fields
+- Introduced **Functional Mode** data item for reporting the operational mode of a device (e.g., `PRODUCTION`, `SETUP`, `TEARDOWN`, `MAINTENANCE`)
+- Added **PartCount** and **PartStatus** data items for part tracking
+- Introduced **Hardness** measurement type for cutting tool assets
+</Update>
+
+<Update label="v1.7" description="2018">
+  First release of the MTConnect 1.7 agent.
+
+- Introduced **References** — `ComponentRef` and `DataItemRef` elements allowing a component to include observations from another component
+- Added **Composition** elements for describing sub-component physical structures
+- Added **CoordinateSystem** and **CoordinateSystemRef** for specifying coordinate frames on spatial data items
+</Update>
+
+<Update label="v1.6" description="2017">
+  First release of the MTConnect 1.6 agent.
+
+- Added **Auxiliary** top-level component type for supporting devices (loaders, bar feeders)
+- Introduced **Door** and **Chuck** components with corresponding state data items
+- Added **Vibration** and **SoundLevel** sensor data item types
+</Update>
+
+<Update label="v1.5" description="2016">
+  First release of the MTConnect 1.5 agent.
+
+- Introduced the **Asset** information model for describing objects associated with a manufacturing process
+- Added **CuttingTool** and **CuttingToolArchetype** as the first standard asset types
+- Added **ProcessTime**, **PartId**, and **PartNumber** data items for part traceability
+</Update>
+
+<Update label="v1.4" description="2012">
+  First release of the MTConnect 1.4 agent.
+
+- Introduced **Condition** observations with severity levels (`FAULT`, `WARNING`, `NORMAL`) and native codes
+- Introduced **Controller** and **Path** components for CNC controllers and tool paths
+- Added **Execution** and **ControllerMode** data items for tracking program and machine state
+</Update>
+
+<Update label="v1.3" description="2011">
+  First release of the MTConnect 1.3 agent.
+
+- Added **Linear** and **Rotary** axis components with standard data items
+- Introduced `nativeUnits` and `unitMultiplier` for reporting in device-native units
+- Added **Load** and **Temperature** data items
+</Update>
+
+<Update label="v1.2" description="2010">
+  First release of the MTConnect 1.2 agent.
+
+- Introduced the **Device Information Model** — formal XML schema describing device structure and data items
+- Defined the three core document types: `MTConnectDevices`, `MTConnectStreams`, `MTConnectError`
+- Established the REST API with `probe`, `current`, `sample`, and `asset` endpoints
+- Defined the **SHDR** adapter protocol
+</Update>
