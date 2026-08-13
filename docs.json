@@ -66,6 +66,29 @@
           "reference/xml-schema",
           "reference/changelog"
         ]
+      },
+      {
+        "group": "API Reference",
+        "icon": "plug",
+        "openapi": "api-reference/openapi.json",
+        "pages": [
+          "api-reference/introduction",
+          "GET /probe",
+          "GET /current",
+          "GET /sample",
+          "GET /asset",
+          "GET /asset/{assetIds}",
+          "GET /assets",
+          "GET /assets/{assetIds}",
+          "GET /{device}/probe",
+          "GET /{device}/current",
+          "GET /{device}/sample",
+          "GET /{device}/asset",
+          "GET /{device}/assets",
+          "GET /{device}",
+          "GET /",
+          "GET /cancel/id={string}"
+        ]
       }
     ],
     "global": {
