@@ -1,0 +1,56 @@
+---
+title: "What is MTConnect?"
+description: "An open, royalty-free standard (ANSI/MTC1.4-2018) that defines a semantic vocabulary for manufacturing equipment data."
+---
+
+<div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+  <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.72rem', fontWeight: '600', padding: '3px 10px', borderRadius: '100px', textTransform: 'uppercase', letterSpacing: '0.05em', background: '#d1fae5', color: '#065f46' }}>Stable</span>
+  <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.72rem', fontWeight: '600', padding: '3px 10px', borderRadius: '100px', textTransform: 'uppercase', letterSpacing: '0.05em', background: '#dbeafe', color: '#1d4ed8' }}>v2.2</span>
+</div>
+
+MTConnect is an open, royalty-free standard (ANSI/MTC1.4-2018) that defines a semantic vocabulary for manufacturing equipment data. It gives machines a common language so any application can read data from any compliant device — without proprietary adapters or vendor lock-in.
+
+<Check>
+  MTConnect is used on **250,000+ devices** across **50+ countries**, developed by over 500 machine builders and integrators.
+</Check>
+
+## Key Capabilities
+
+<CardGroup cols={2}>
+  <Card title="Real-Time Data" icon="bolt" href="/getting-started/quickstart">
+    Stream live machine data via a **streaming REST API** over standard HTTP
+  </Card>
+  <Card title="Open Architecture" icon="diagram-project" href="/concepts/architecture">
+    Agent + Adapter pattern, works with any language
+  </Card>
+  <Card title="Semantic Model" icon="chart-bar" href="/concepts/data-items">
+    Shared vocabulary for 1000s of data item types
+  </Card>
+  <Card title="Code Examples" icon="terminal" href="/tutorials/code-examples">
+    Python, JavaScript, C# — ready to run
+  </Card>
+</CardGroup>
+
+## How It Works
+
+The MTConnect architecture has three layers:
+
+1. **Machine / Device** — CNC machines, robots, sensors generating raw data
+2. **Adapter** — translates machine signals into the SHDR protocol
+3. **Agent** — normalizes data and exposes it as a **streaming REST API over HTTP**, serving structured XML responses at endpoints like `/probe`, `/current`, and `/sample`
+
+Client applications call the Agent's HTTP endpoints (`/probe`, `/current`, `/sample`) to discover devices, read current values, or stream historical data.
+
+## Supported versions
+
+| Version | Released | Notable additions |
+|---------|----------|-------------------|
+| `2.7` | 2025 | Latest stable; WebSocket asset support, C++20 migration |
+| `2.6` | 2024 | `AssetAdded` event, REST error response documents |
+| `2.5` | 2024 | Pallet & Fixture assets, WebSocket support, MQTT topics |
+| `2.4` | 2023 | SensorConfiguration, SpecificationLimits, AlarmLimits |
+| `2.3` | 2023 | Condition ID, PartProcessingState, ProcessOccurrenceId |
+| `2.2` | 2023 | TableEntry/DataSetEntry, CoordinateSystems UUID, SolidModel config |
+| `2.1` | 2022 | Interfaces, Relationships, Specifications |
+| `2.0` | 2021 | Observation Information Model, DataSet/Table types, Part assets |
+| `1.8` | 2020 | FunctionalMode, PartCount/PartStatus, CuttingTool enhancements |

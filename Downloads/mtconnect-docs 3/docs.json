@@ -1,0 +1,123 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "MTConnect",
+  "colors": {
+    "primary": "#1D4ED8",
+    "light": "#3B82F6",
+    "dark": "#0D2040"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/logo.svg",
+    "dark": "/logo/logo.svg"
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "navbar": {
+    "links": [
+      { "label": "Model Browser", "href": "https://model.mtconnect.org/" },
+      { "label": "GitHub",        "href": "https://github.com/mtconnect"  },
+      { "label": "Slack",         "href": "https://mtconnect.slack.com/"  }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "MTConnect.org",
+      "href": "https://www.mtconnect.org"
+    }
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting Started",
+        "icon": "rocket",
+        "pages": [
+          "index",
+          "getting-started/quickstart",
+          "getting-started/installation"
+        ]
+      },
+      {
+        "group": "Core Concepts",
+        "icon": "book-open",
+        "pages": [
+          "concepts/architecture",
+          "concepts/devices-and-adapters",
+          "concepts/data-items",
+          "concepts/streams-and-samples",
+          "concepts/assets"
+        ]
+      },
+      {
+        "group": "Tutorials",
+        "icon": "graduation-cap",
+        "pages": [
+          "tutorials/writing-an-adapter",
+          "tutorials/building-a-client",
+          "tutorials/code-examples"
+        ]
+      },
+      {
+        "group": "Reference",
+        "icon": "book",
+        "pages": [
+          "reference/data-model",
+          "reference/xml-schema",
+          "reference/changelog"
+        ]
+      },
+      {
+        "group": "API Reference",
+        "icon": "plug",
+        "openapi": "api-reference/openapi.json",
+        "pages": [
+          "api-reference/introduction",
+          "GET /probe",
+          "GET /current",
+          "GET /sample",
+          "GET /asset",
+          "GET /asset/{assetIds}",
+          "GET /assets",
+          "GET /assets/{assetIds}",
+          "GET /{device}/probe",
+          "GET /{device}/current",
+          "GET /{device}/sample",
+          "GET /{device}/asset",
+          "GET /{device}/assets",
+          "GET /{device}",
+          "GET /",
+          "GET /cancel/id={string}"
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Model Browser",
+          "href": "https://model.mtconnect.org",
+          "icon": "globe"
+        },
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/mtconnect",
+          "icon": "github"
+        },
+        {
+          "anchor": "Community Slack",
+          "href": "https://mtconnect.slack.com",
+          "icon": "slack"
+        }
+      ]
+    }
+  },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude"]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/mtconnect",
+      "linkedin": "https://linkedin.com/company/mtconnect"
+    }
+  }
+}

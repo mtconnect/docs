@@ -1,0 +1,38 @@
+---
+title: "Tutorial: Writing an Adapter"
+description: "An adapter connects a machine to an MTConnect Agent using the SHDR protocol over a TCP socket."
+icon: "plug"
+---
+
+An adapter connects a machine to an MTConnect Agent using the SHDR protocol over a TCP socket. Here's a complete Python adapter for a simulated CNC machine.
+
+```python simple_adapter.py
+import socket, time, random, datetime
+
+HOST = "0.0.0.0"   # Listen on all interfaces
+PORT = 7878        # Agent will connect to this port
+
+def timestamp():
+    return datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+
+def shdr(key, value):
+    return f"{timestamp()}|{key}|{value}\n"
+
+# Create a TCP server socket
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server.bind((HOST, PORT))
+    server.listen(1)
+    print(f"Adapter listening on port {PORT}, waiting for agent...")
+
+    conn, addr = server.accept()   # Block until the agent connects
+    with conn:
+        print(f"Agent connected from {addr}")
+        while True:
+            speed = round(random.uniform(2800, 3200), 1)
+            x_pos = round(random.uniform(-100, 100), 3)
+            conn.sendall(shdr("S1speed", speed).encode())
+            conn.sendall(shdr("Xpos", x_pos).encode())
+            conn.sendall(shdr("Smode", "AUTOMATIC").encode())
+            time.sleep(0.5)
+```

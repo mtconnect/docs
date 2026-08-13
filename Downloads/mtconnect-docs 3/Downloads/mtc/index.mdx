@@ -1,0 +1,49 @@
+---
+title: "What is MTConnect?"
+description: "An open, royalty-free standard that defines a semantic vocabulary for manufacturing equipment data."
+---
+
+<div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+  <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.72rem', fontWeight: '600', padding: '3px 10px', borderRadius: '100px', textTransform: 'uppercase', letterSpacing: '0.05em', background: '#d1fae5', color: '#065f46' }}>Stable</span>
+  <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.72rem', fontWeight: '600', padding: '3px 10px', borderRadius: '100px', textTransform: 'uppercase', letterSpacing: '0.05em', background: '#dbeafe', color: '#1d4ed8' }}>v2.2</span>
+</div>
+
+MTConnect is an open, royalty-free standard (ANSI/MTC1.4-2018) that defines a semantic vocabulary for manufacturing equipment data. It gives machines a common language so any application can read data from any compliant device — without proprietary adapters or vendor lock-in.
+
+<Check>
+  MTConnect is used on **250,000+ devices** across **50+ countries**, developed by over 500 machine builders and integrators.
+</Check>
+
+## Key Capabilities
+
+<CardGroup cols={2}>
+  <Card title="Real-Time Data" icon="bolt" href="/getting-started/quickstart">
+    Stream live machine data over standard HTTP
+  </Card>
+  <Card title="Open Architecture" icon="diagram-project" href="/concepts/architecture">
+    Agent + Adapter pattern, works with any language
+  </Card>
+  <Card title="Semantic Model" icon="chart-bar" href="/concepts/data-items">
+    Shared vocabulary for 1000s of data item types
+  </Card>
+  <Card title="Code Examples" icon="terminal" href="/tutorials/code-examples">
+    Python, JavaScript, C# — ready to run
+  </Card>
+</CardGroup>
+
+## How It Works
+
+The MTConnect architecture has three layers:
+
+1. **Machine / Device** — CNC machines, robots, sensors generating raw data
+2. **Adapter** — translates machine signals into the SHDR protocol
+3. **Agent** — normalizes data and serves it over HTTP as structured XML
+
+Client applications call the Agent's HTTP endpoints (`/probe`, `/current`, `/sample`) to discover devices, read current values, or stream historical data.
+
+## Supported Versions
+
+- **v2.2** (current) — CuttingTool enhancements, additive manufacturing types
+- **v2.1** — Component relationships, Specifications data items
+- **v2.0** — Device Relationships, Interface components
+- **v1.x** — Legacy, still widely deployed

@@ -1,0 +1,27 @@
+---
+title: "Architecture"
+description: "MTConnect uses a three-tier architecture: Device → Adapter → Agent → Client."
+---
+
+MTConnect uses a three-tier architecture: **Device → Adapter → Agent → Client**.
+
+## The Agent
+
+The Agent is the central hub. It accepts data from one or more adapters over TCP, buffers it in a circular buffer, and serves it to clients over HTTP. The reference implementation is the open-source [C++ Agent](https://github.com/mtconnect/cppagent).
+
+## Adapters (SHDR Protocol)
+
+Adapters connect machines to the Agent using the Simple Hierarchical Data Representation (SHDR) protocol over a TCP socket. Each line is a pipe-delimited string:
+
+```
+2024-01-15T10:23:45.000Z|Smode|AUTOMATIC
+2024-01-15T10:23:45.001Z|S1speed|3500.0
+2024-01-15T10:23:45.001Z|path_pos|100.5|200.3|0.0
+```
+
+## HTTP Endpoints
+
+- `GET /probe` — device structure and metadata
+- `GET /current` — latest snapshot of all data items
+- `GET /sample` — sequence of observations from the buffer
+- `GET /assets` — retrieve assets (e.g. cutting tools)
