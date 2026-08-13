@@ -1,22 +1,14 @@
 ---
 title: "API Reference"
-description: "Interactive reference for the MTConnect Agent's REST API, generated from the Agent's own Swagger/OpenAPI specification."
-icon: "info"
+description: "Every endpoint of the MTConnect Agent's REST API — parameters, requests, and example responses — generated from the Agent's own Swagger/OpenAPI specification."
+icon: "plug"
 ---
 
-The MTConnect Agent exposes every endpoint described in [Streams & Samples](/concepts/streams-and-samples) — `probe`, `current`, `sample`, and `asset` — through a self-documenting REST API. Every C++ Agent (v2.2+) serves its own Swagger specification at `/swagger`, and the pages in this section are generated directly from that specification.
+The MTConnect Agent exposes a small set of endpoints — `probe`, `current`, `sample`, and `asset` — through a self-documenting REST API. Every C++ Agent (v2.2+) serves its own Swagger specification at `/swagger`. This page documents every operation in that specification.
 
 <Info>
-  This reference is generated from the live specification served by the public demo Agent at [demo.mtconnect.org/swagger](https://demo.mtconnect.org/swagger), running Agent version 2.7.0.13.
+  Generated from the live specification at [demo.mtconnect.org/swagger](https://demo.mtconnect.org/swagger), running Agent version **2.7.0.13**. Download the raw spec: [`api-reference/openapi.json`](/api-reference/openapi.json).
 </Info>
-
-## Try it live
-
-Every endpoint below includes a **Try it** panel pre-configured against `https://demo.mtconnect.org/` — the public MTConnect demo Agent. You can send real requests and see real responses without installing anything.
-
-<Tip>
-  Prefer to hit your own Agent? Change the server value in each **Try it** panel to your Agent's base URL, for example `http://localhost:5000/`.
-</Tip>
 
 ## Response format
 
@@ -26,29 +18,242 @@ All endpoints return **XML by default**. Add `format=json` as a query parameter,
 curl "https://demo.mtconnect.org/current?format=json"
 ```
 
-## Endpoint groups
-
-<CardGroup cols={2}>
-  <Card title="Probe" icon="list-tree">
-    Discover devices, components, and data item definitions
-  </Card>
-  <Card title="Current" icon="camera">
-    Snapshot the latest value of every data item
-  </Card>
-  <Card title="Sample" icon="chart-line">
-    Stream or poll a time series of observations from the buffer
-  </Card>
-  <Card title="Asset" icon="box">
-    Retrieve assets such as cutting tools, fixtures, and pallets
-  </Card>
-</CardGroup>
-
-See the rest of the **API Reference** group in the sidebar, right below this page, for the full interactive list.
-
 <Note>
-  Every endpoint is also available scoped to a single device: prefix the path with the device's UUID or name, for example `GET /{device}/current` instead of `GET /current`.
+  Every endpoint below is also available scoped to a single device — prefix the path with the device's UUID or name, for example `GET /{device}/current` instead of `GET /current`. Device-scoped parameters are identical, plus the required `device` path parameter.
 </Note>
+
+---
+
+## Probe
+
+<Tip>Always start here. `/probe` describes every device, component, and data item the Agent knows about.</Tip>
+
+### `GET /probe`
+
+Provides metadata for the MTConnect Devices information model, for all devices (also available at `GET /`).
+
+<ParamField query="deviceType" type="string">Values are `Device` or `Agent`. Selects only devices of that type.</ParamField>
+<ParamField query="format" type="string">The format of the response document: `xml` or `json`.</ParamField>
+<ParamField query="pretty" type="boolean" default="false">Instructs the result to be pretty printed.</ParamField>
+
+```bash Request
+curl "https://demo.mtconnect.org/probe"
+```
+
+```xml Response
+<MTConnectDevices>
+  <Header instanceId="1" nextSequence="3274" ... />
+  <Devices>
+    <Device id="dev1" name="Mazak" uuid="MAZAK001">
+      <Components>
+        <Controller id="ctrl1">
+          <DataItems>
+            <DataItem id="exec1" type="EXECUTION" category="EVENT"/>
+            <DataItem id="mode1" type="CONTROLLER_MODE" category="EVENT"/>
+          </DataItems>
+        </Controller>
+      </Components>
+    </Device>
+  </Devices>
+</MTConnectDevices>
+```
+
+### `GET /{device}/probe`
+
+Same as above, scoped to the device identified by `device` (matching its `name` or `uuid`).
+
+<ParamField path="device" type="string" required>Device UUID or name.</ParamField>
+<ParamField query="deviceType" type="string">Values are `Device` or `Agent`. Selects only devices of that type.</ParamField>
+<ParamField query="format" type="string">The format of the response document: `xml` or `json`.</ParamField>
+<ParamField query="pretty" type="boolean" default="false">Instructs the result to be pretty printed.</ParamField>
+
+```bash Request
+curl "https://demo.mtconnect.org/Mazak/probe"
+```
+
+---
+
+## Current
+
+### `GET /current`
+
+Gets a snapshot of the state of all observations for all devices, optionally filtered by `path`. The response header's `nextSequence` value is what you pass to `/sample` to start streaming from this point forward.
+
+<ParamField query="at" type="integer">Sequence number at which the observation snapshot is taken.</ParamField>
+<ParamField query="deviceType" type="string">Values are `Device` or `Agent`. Selects only devices of that type.</ParamField>
+<ParamField query="format" type="string">The format of the response document: `xml` or `json`.</ParamField>
+<ParamField query="interval" type="integer">Time in ms between publishing data — starts streaming.</ParamField>
+<ParamField query="path" type="string">XPath to filter DataItems matched against the probe document.</ParamField>
+<ParamField query="pretty" type="boolean" default="false">Instructs the result to be pretty printed.</ParamField>
+
+```bash Request
+curl "https://demo.mtconnect.org/current"
+```
+
+```xml Response
+<MTConnectStreams>
+  <Header nextSequence="3274" firstSequence="1274" lastSequence="3273" ... />
+  <Streams>
+    <DeviceStream name="Mazak">
+      <ComponentStream component="Controller">
+        <Events>
+          <Execution dataItemId="exec1" timestamp="2024-01-15T10:23:45.000Z">ACTIVE</Execution>
+          <ControllerMode dataItemId="mode1" timestamp="2024-01-15T10:23:45.001Z">AUTOMATIC</ControllerMode>
+        </Events>
+      </ComponentStream>
+    </DeviceStream>
+  </Streams>
+</MTConnectStreams>
+```
+
+**Common `path` filters:**
+
+```bash
+GET /current?path=//DataItem[@type="AVAILABILITY"]
+GET /current?path=//DataItems/DataItem[@category="CONDITION"]
+GET /current?path=//Controller/Components/Path/DataItems/DataItem[@type="EXECUTION"]
+```
+
+### `GET /{device}/current`
+
+Same as above, scoped to a single device.
+
+<ParamField path="device" type="string" required>Device UUID or name.</ParamField>
+<ParamField query="at" type="integer">Sequence number at which the observation snapshot is taken.</ParamField>
+<ParamField query="deviceType" type="string">Values are `Device` or `Agent`. Selects only devices of that type.</ParamField>
+<ParamField query="format" type="string">The format of the response document: `xml` or `json`.</ParamField>
+<ParamField query="interval" type="integer">Time in ms between publishing data — starts streaming.</ParamField>
+<ParamField query="path" type="string">XPath to filter DataItems matched against the probe document.</ParamField>
+<ParamField query="pretty" type="boolean" default="false">Instructs the result to be pretty printed.</ParamField>
+
+---
+
+## Sample
+
+### `GET /sample`
+
+Gets a time series of up to `count` observations for all devices, optionally filtered by `path` and starting at `from`. By default, `from` is the first available observation known to the Agent.
+
+<ParamField query="count" type="integer" default="100">Maximum number of entities to include in results.</ParamField>
+<ParamField query="deviceType" type="string">Values are `Device` or `Agent`. Selects only devices of that type.</ParamField>
+<ParamField query="format" type="string">The format of the response document: `xml` or `json`.</ParamField>
+<ParamField query="from" type="integer">Sequence number at which to start reporting observations.</ParamField>
+<ParamField query="heartbeat" type="integer" default="10000">Time in ms between publishing an empty document when no data has changed.</ParamField>
+<ParamField query="interval" type="integer">Time in ms between publishing data — starts streaming.</ParamField>
+<ParamField query="path" type="string">XPath to filter DataItems matched against the probe document.</ParamField>
+<ParamField query="pretty" type="boolean" default="false">Instructs the result to be pretty printed.</ParamField>
+<ParamField query="to" type="integer">Sequence number at which to stop reporting observations.</ParamField>
+
+**Polling** (fixed interval requests from your client):
+
+```python
+last_seq = get_next_sequence()  # from /current
+r = requests.get(f"{BASE}/sample?from={last_seq}&count=100")
+```
+
+**Server-side streaming** (Agent holds the connection open and pushes data):
+
+```bash
+# Push new observations every 1 second, starting from sequence 3274
+GET /sample?from=3274&interval=1000
+
+# Push only part count changes, every 2 seconds
+GET /sample?from=3274&interval=2000&path=//DataItem[@type="PART_COUNT"]
+```
+
+<Tip>Use `interval=0` to have the Agent deliver data at the highest possible rate.</Tip>
+
+### `GET /{device}/sample`
+
+Same as above, scoped to a single device.
+
+<ParamField path="device" type="string" required>Device UUID or name.</ParamField>
+<ParamField query="count" type="integer" default="100">Maximum number of entities to include in results.</ParamField>
+<ParamField query="deviceType" type="string">Values are `Device` or `Agent`. Selects only devices of that type.</ParamField>
+<ParamField query="format" type="string">The format of the response document: `xml` or `json`.</ParamField>
+<ParamField query="from" type="integer">Sequence number at which to start reporting observations.</ParamField>
+<ParamField query="heartbeat" type="integer" default="10000">Time in ms between publishing an empty document when no data has changed.</ParamField>
+<ParamField query="interval" type="integer">Time in ms between publishing data — starts streaming.</ParamField>
+<ParamField query="path" type="string">XPath to filter DataItems matched against the probe document.</ParamField>
+<ParamField query="pretty" type="boolean" default="false">Instructs the result to be pretty printed.</ParamField>
+<ParamField query="to" type="integer">Sequence number at which to stop reporting observations.</ParamField>
+
+---
+
+## Assets
+
+Assets are objects associated with a manufacturing process but not permanently attached to a device — cutting tools, fixtures, pallets, and raw materials are common examples.
+
+### `GET /asset` and `GET /assets`
+
+Returns up to `count` assets. Both paths are equivalent.
+
+<ParamField query="count" type="integer" default="100">Maximum number of entities to include in results.</ParamField>
+<ParamField query="device" type="string">Device UUID or name.</ParamField>
+<ParamField query="format" type="string">The format of the response document: `xml` or `json`.</ParamField>
+<ParamField query="pretty" type="boolean" default="false">Instructs the result to be pretty printed.</ParamField>
+<ParamField query="removed" type="boolean" default="false">Boolean indicating if removed assets are included in results.</ParamField>
+<ParamField query="type" type="string">Only include assets of type `type` in the results.</ParamField>
+
+```bash Request
+curl "https://demo.mtconnect.org/assets?type=CuttingTool"
+```
+
+```xml Response
+<Assets>
+  <CuttingTool assetId="EDP1234" serialNumber="1234" toolId="EDP">
+    <CuttingToolLifeCycle>
+      <ToolLife countDirection="UP" initial="0" limit="150" type="MINUTES">
+        <value>47</value>
+      </ToolLife>
+      <Measurements>
+        <FunctionalLength maximum="63.5" minimum="60.5" nominal="62.0" units="MILLIMETER">62.1</FunctionalLength>
+        <CuttingDiameterMax nominal="25.4" units="MILLIMETER">25.4</CuttingDiameterMax>
+      </Measurements>
+    </CuttingToolLifeCycle>
+  </CuttingTool>
+</Assets>
+```
+
+### `GET /asset/{assetIds}` and `GET /assets/{assetIds}`
+
+Returns the assets identified by `assetIds`, a semicolon (`;`) separated list.
+
+<ParamField path="assetIds" type="string" required>Semicolon (`;`) separated list of asset IDs.</ParamField>
+
+```bash Request
+curl "https://demo.mtconnect.org/asset/EDP1234;EDP1235"
+```
+
+### `GET /{device}/asset` and `GET /{device}/assets`
+
+Same as `GET /assets`, scoped to a single device.
+
+<ParamField path="device" type="string" required>Device UUID or name.</ParamField>
+<ParamField query="count" type="integer" default="100">Maximum number of entities to include in results.</ParamField>
+<ParamField query="format" type="string">The format of the response document: `xml` or `json`.</ParamField>
+<ParamField query="pretty" type="boolean" default="false">Instructs the result to be pretty printed.</ParamField>
+<ParamField query="removed" type="boolean" default="false">Boolean indicating if removed assets are included in results.</ParamField>
+<ParamField query="type" type="string">Only include assets of type `type` in the results.</ParamField>
+
+**Supported asset types:** `CuttingTool`, `CuttingToolArchetype`, `Fixture` (v2.5+), `Pallet` (v2.5+), `RawMaterial`, `Part` (v2.7+), `PartArchetype` (v2.7+), `Task` (v2.7+), `Process` (v2.7+).
+
+---
+
+## Streaming control
+
+### `GET /cancel/id={string}`
+
+Cancels an in-progress streaming `/sample` request opened with `interval=`.
+
+<ParamField path="string" type="string" required>The identifier of the streaming request to cancel.</ParamField>
+
+```bash Request
+curl "https://demo.mtconnect.org/cancel/id=abc123"
+```
+
+---
 
 ## Where this spec comes from
 
-The C++ Agent has served its own Swagger UI at the `/swagger` path since **v2.2** (see the [changelog](/reference/changelog)). Because the specification is generated by the Agent itself, it always reflects the exact endpoints and parameters supported by whatever version you're running — the copy embedded in this site is a snapshot for documentation purposes and may lag behind your Agent's own `/swagger` page for pre-release or patch versions.
+The C++ Agent has served its own Swagger UI at the `/swagger` path since **v2.2** (see the [changelog](/reference/changelog)). Because the specification is generated by the Agent itself, it always reflects the exact endpoints and parameters supported by whatever version you're running — this page is a documentation snapshot and may lag behind your Agent's own `/swagger` page for pre-release or patch versions.

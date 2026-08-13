@@ -11,13 +11,20 @@ import requests
 import xml.etree.ElementTree as ET
 
 BASE = "http://localhost:5000"
-NS = {"m": "urn:mtconnect.org:MTConnectStreams:2.0"}
 
 def get_current():
     r = requests.get(f"{BASE}/current")
     root = ET.fromstring(r.text)
-    items = root.findall(".//m:DataItem", NS)
-    return {item.get("dataItemId"): item.text for item in items}
+    # Observations are returned as type-specific elements (e.g. <Execution>,
+    # <ControllerMode>, <PathPosition>) rather than a generic <DataItem> tag —
+    # see /concepts/streams-and-samples. Walk every element instead and use
+    # the dataItemId attribute, which every observation carries, to identify
+    # them.
+    return {
+        item.get("dataItemId"): item.text
+        for item in root.iter()
+        if item.get("dataItemId")
+    }
 
 if __name__ == "__main__":
     data = get_current()
