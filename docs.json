@@ -66,6 +66,13 @@
           "reference/xml-schema",
           "reference/changelog"
         ]
+      },
+      {
+        "group": "API Reference",
+        "icon": "plug",
+        "pages": [
+          "api-reference/introduction"
+        ]
       }
     ],
     "global": {
